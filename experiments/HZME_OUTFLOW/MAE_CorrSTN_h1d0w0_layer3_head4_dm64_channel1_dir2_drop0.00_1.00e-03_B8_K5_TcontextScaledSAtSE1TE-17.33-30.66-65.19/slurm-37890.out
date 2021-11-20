@@ -1,0 +1,2756 @@
+Sun Oct 31 09:21:25 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 418.165.02   Driver Version: 418.165.02   CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla V100-PCIE...  Off  | 00000000:5A:00.0 Off |                    0 |
+| N/A   64C    P0   170W / 250W |  30786MiB / 32480MiB |     98%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  Off  | 00000000:5E:00.0 Off |                    0 |
+| N/A   38C    P0    86W / 250W |   4436MiB / 32480MiB |     49%      Default |
++-------------------------------+----------------------+----------------------+
+|   2  Tesla V100-PCIE...  Off  | 00000000:62:00.0 Off |                    0 |
+| N/A   42C    P0    35W / 250W |   1152MiB / 32480MiB |     17%      Default |
++-------------------------------+----------------------+----------------------+
+|   3  Tesla V100-PCIE...  Off  | 00000000:66:00.0 Off |                    0 |
+| N/A   31C    P0    38W / 250W |  17087MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   4  Tesla V100-PCIE...  Off  | 00000000:B5:00.0 Off |                    0 |
+| N/A   24C    P0    23W / 250W |     11MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   5  Tesla V100-PCIE...  Off  | 00000000:B9:00.0 Off |                    0 |
+| N/A   28C    P0    25W / 250W |     11MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   6  Tesla V100-PCIE...  Off  | 00000000:BD:00.0 Off |                    0 |
+| N/A   26C    P0    23W / 250W |     11MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   7  Tesla V100-PCIE...  Off  | 00000000:C1:00.0 Off |                    0 |
+| N/A   44C    P0   101W / 250W |   5352MiB / 32480MiB |     59%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0     56410      C   python                                     30775MiB |
+|    1     16196      C   python                                      4425MiB |
+|    2     34020      C   python                                      1141MiB |
+|    3     53949      C   python                                     17075MiB |
+|    7     38566      C   python                                      5341MiB |
++-----------------------------------------------------------------------------+
+CUDA: True cuda:0
+Read configuration file: /data/home/u18112042/CorrSTN/configurations/HZME_OUTFLOW.conf
+total training epoch, fine tune epoch: 350 , 170
+batch_size: 8
+attention_top_k: 5
+folder_dir: MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE
+load file: /data/home/u18112042/CorrSTN/data/HZME_OUTFLOW/HZME_OUTFLOW_r1_d0_w0.npz
+ori length: 4479 , percent: 1.0 , scale: 4479
+train: torch.Size([3323, 80, 1, 12]) torch.Size([3323, 80, 12]) torch.Size([3323, 80, 12])
+val: torch.Size([1128, 80, 1, 12]) torch.Size([1128, 80, 12]) torch.Size([1128, 80, 12])
+test: torch.Size([1128, 80, 1, 12]) torch.Size([1128, 80, 12]) torch.Size([1128, 80, 12])
+TemporalPositionalEncoding max_len: 12
+w_index: []
+d_index: []
+h_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+en_lookup_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+EncoderDecoder(
+  (encoder): Encoder(
+    (layers): ModuleList(
+      (0): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (1): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (2): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+    )
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): Decoder(
+    (layers): ModuleList(
+      (0): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (1): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (2): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+            (1): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 4))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 5), stride=(1, 1), padding=(0, 2))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+    )
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (src_embed): Sequential(
+    (0): Linear(in_features=1, out_features=64, bias=True)
+    (1): TemporalPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (2): SpatialPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+      (embedding): Embedding(80, 64)
+      (gcn_smooth_layers): ModuleList(
+        (0): GCN(
+          (Theta): Linear(in_features=64, out_features=64, bias=False)
+        )
+      )
+    )
+  )
+  (trg_embed): Sequential(
+    (0): Linear(in_features=1, out_features=64, bias=True)
+    (1): TemporalPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (2): SpatialPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+      (embedding): Embedding(80, 64)
+      (gcn_smooth_layers): ModuleList(
+        (0): GCN(
+          (Theta): Linear(in_features=64, out_features=64, bias=False)
+        )
+      )
+    )
+  )
+  (prediction_generator): Linear(in_features=64, out_features=1, bias=True)
+)
+create params directory ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE
+Net's state_dict:
+encoder.layers.0.self_attn.linears.0.weight 	 torch.Size([64, 64])
+encoder.layers.0.self_attn.linears.0.bias 	 torch.Size([64])
+encoder.layers.0.self_attn.linears.1.weight 	 torch.Size([64, 64])
+encoder.layers.0.self_attn.linears.1.bias 	 torch.Size([64])
+encoder.layers.0.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.0.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+encoder.layers.0.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.0.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+encoder.layers.0.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+encoder.layers.0.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+encoder.layers.0.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+encoder.layers.0.sublayer.0.norm.weight 	 torch.Size([64])
+encoder.layers.0.sublayer.0.norm.bias 	 torch.Size([64])
+encoder.layers.0.sublayer.1.norm.weight 	 torch.Size([64])
+encoder.layers.0.sublayer.1.norm.bias 	 torch.Size([64])
+encoder.layers.1.self_attn.linears.0.weight 	 torch.Size([64, 64])
+encoder.layers.1.self_attn.linears.0.bias 	 torch.Size([64])
+encoder.layers.1.self_attn.linears.1.weight 	 torch.Size([64, 64])
+encoder.layers.1.self_attn.linears.1.bias 	 torch.Size([64])
+encoder.layers.1.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.1.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+encoder.layers.1.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.1.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+encoder.layers.1.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+encoder.layers.1.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+encoder.layers.1.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+encoder.layers.1.sublayer.0.norm.weight 	 torch.Size([64])
+encoder.layers.1.sublayer.0.norm.bias 	 torch.Size([64])
+encoder.layers.1.sublayer.1.norm.weight 	 torch.Size([64])
+encoder.layers.1.sublayer.1.norm.bias 	 torch.Size([64])
+encoder.layers.2.self_attn.linears.0.weight 	 torch.Size([64, 64])
+encoder.layers.2.self_attn.linears.0.bias 	 torch.Size([64])
+encoder.layers.2.self_attn.linears.1.weight 	 torch.Size([64, 64])
+encoder.layers.2.self_attn.linears.1.bias 	 torch.Size([64])
+encoder.layers.2.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.2.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+encoder.layers.2.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+encoder.layers.2.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+encoder.layers.2.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+encoder.layers.2.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+encoder.layers.2.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+encoder.layers.2.sublayer.0.norm.weight 	 torch.Size([64])
+encoder.layers.2.sublayer.0.norm.bias 	 torch.Size([64])
+encoder.layers.2.sublayer.1.norm.weight 	 torch.Size([64])
+encoder.layers.2.sublayer.1.norm.bias 	 torch.Size([64])
+encoder.norm.weight 	 torch.Size([64])
+encoder.norm.bias 	 torch.Size([64])
+decoder.layers.0.self_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.0.self_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.0.self_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.0.self_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.0.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.0.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+decoder.layers.0.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.0.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+decoder.layers.0.src_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.0.src_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.0.src_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.0.src_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.0.src_attn.query_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.0.src_attn.query_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.0.src_attn.key_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.0.src_attn.key_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.0.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+decoder.layers.0.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+decoder.layers.0.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+decoder.layers.0.sublayer.0.norm.weight 	 torch.Size([64])
+decoder.layers.0.sublayer.0.norm.bias 	 torch.Size([64])
+decoder.layers.0.sublayer.1.norm.weight 	 torch.Size([64])
+decoder.layers.0.sublayer.1.norm.bias 	 torch.Size([64])
+decoder.layers.0.sublayer.2.norm.weight 	 torch.Size([64])
+decoder.layers.0.sublayer.2.norm.bias 	 torch.Size([64])
+decoder.layers.1.self_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.1.self_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.1.self_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.1.self_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.1.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.1.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+decoder.layers.1.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.1.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+decoder.layers.1.src_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.1.src_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.1.src_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.1.src_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.1.src_attn.query_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.1.src_attn.query_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.1.src_attn.key_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.1.src_attn.key_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.1.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+decoder.layers.1.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+decoder.layers.1.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+decoder.layers.1.sublayer.0.norm.weight 	 torch.Size([64])
+decoder.layers.1.sublayer.0.norm.bias 	 torch.Size([64])
+decoder.layers.1.sublayer.1.norm.weight 	 torch.Size([64])
+decoder.layers.1.sublayer.1.norm.bias 	 torch.Size([64])
+decoder.layers.1.sublayer.2.norm.weight 	 torch.Size([64])
+decoder.layers.1.sublayer.2.norm.bias 	 torch.Size([64])
+decoder.layers.2.self_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.2.self_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.2.self_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.2.self_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.2.self_attn.conv1Ds_aware_temporal_context.0.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.2.self_attn.conv1Ds_aware_temporal_context.0.bias 	 torch.Size([64])
+decoder.layers.2.self_attn.conv1Ds_aware_temporal_context.1.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.2.self_attn.conv1Ds_aware_temporal_context.1.bias 	 torch.Size([64])
+decoder.layers.2.src_attn.linears.0.weight 	 torch.Size([64, 64])
+decoder.layers.2.src_attn.linears.0.bias 	 torch.Size([64])
+decoder.layers.2.src_attn.linears.1.weight 	 torch.Size([64, 64])
+decoder.layers.2.src_attn.linears.1.bias 	 torch.Size([64])
+decoder.layers.2.src_attn.query_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.2.src_attn.query_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.2.src_attn.key_conv1Ds_aware_temporal_context.weight 	 torch.Size([64, 64, 1, 5])
+decoder.layers.2.src_attn.key_conv1Ds_aware_temporal_context.bias 	 torch.Size([64])
+decoder.layers.2.feed_forward_gcn.gcn.alpha 	 torch.Size([1])
+decoder.layers.2.feed_forward_gcn.gcn.beta 	 torch.Size([1])
+decoder.layers.2.feed_forward_gcn.gcn.Theta.weight 	 torch.Size([64, 64])
+decoder.layers.2.sublayer.0.norm.weight 	 torch.Size([64])
+decoder.layers.2.sublayer.0.norm.bias 	 torch.Size([64])
+decoder.layers.2.sublayer.1.norm.weight 	 torch.Size([64])
+decoder.layers.2.sublayer.1.norm.bias 	 torch.Size([64])
+decoder.layers.2.sublayer.2.norm.weight 	 torch.Size([64])
+decoder.layers.2.sublayer.2.norm.bias 	 torch.Size([64])
+decoder.norm.weight 	 torch.Size([64])
+decoder.norm.bias 	 torch.Size([64])
+src_embed.0.weight 	 torch.Size([64, 1])
+src_embed.0.bias 	 torch.Size([64])
+src_embed.1.pe 	 torch.Size([1, 1, 12, 64])
+src_embed.2.embedding.weight 	 torch.Size([80, 64])
+src_embed.2.gcn_smooth_layers.0.alpha 	 torch.Size([1])
+src_embed.2.gcn_smooth_layers.0.beta 	 torch.Size([1])
+src_embed.2.gcn_smooth_layers.0.Theta.weight 	 torch.Size([64, 64])
+trg_embed.0.weight 	 torch.Size([64, 1])
+trg_embed.0.bias 	 torch.Size([64])
+trg_embed.1.pe 	 torch.Size([1, 1, 12, 64])
+trg_embed.2.embedding.weight 	 torch.Size([80, 64])
+trg_embed.2.gcn_smooth_layers.0.alpha 	 torch.Size([1])
+trg_embed.2.gcn_smooth_layers.0.beta 	 torch.Size([1])
+trg_embed.2.gcn_smooth_layers.0.Theta.weight 	 torch.Size([64, 64])
+prediction_generator.weight 	 torch.Size([1, 64])
+prediction_generator.bias 	 torch.Size([1])
+Net's total params: 491729
+Optimizer's state_dict:
+state 	 {}
+param_groups 	 [{'lr': 0.001, 'betas': (0.9, 0.999), 'eps': 1e-08, 'weight_decay': 0, 'amsgrad': False, 'params': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137]}]
+validation batch 1 / 3, loss: 0.12
+validation cost time: 4.8253s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_0.params
+epoch: 0, train time every whole data:23.28s
+epoch: 0, total time:28.12s
+validation batch 1 / 3, loss: 0.05
+validation cost time: 4.2392s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_1.params
+epoch: 1, train time every whole data:23.27s
+epoch: 1, total time:55.64s
+validation batch 1 / 3, loss: 0.08
+validation cost time: 4.2387s
+epoch: 2, train time every whole data:23.27s
+epoch: 2, total time:83.15s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2399s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_3.params
+epoch: 3, train time every whole data:23.28s
+epoch: 3, total time:110.68s
+validation batch 1 / 3, loss: 0.11
+validation cost time: 4.2380s
+epoch: 4, train time every whole data:23.24s
+epoch: 4, total time:138.16s
+validation batch 1 / 3, loss: 0.06
+validation cost time: 4.2388s
+epoch: 5, train time every whole data:23.26s
+epoch: 5, total time:165.66s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2387s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_6.params
+epoch: 6, train time every whole data:23.26s
+epoch: 6, total time:193.17s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2397s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_7.params
+epoch: 7, train time every whole data:23.26s
+epoch: 7, total time:220.69s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2378s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_8.params
+epoch: 8, train time every whole data:23.27s
+epoch: 8, total time:248.21s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2376s
+epoch: 9, train time every whole data:23.26s
+epoch: 9, total time:275.71s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2390s
+epoch: 10, train time every whole data:23.26s
+epoch: 10, total time:303.21s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2374s
+epoch: 11, train time every whole data:23.24s
+epoch: 11, total time:330.69s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2391s
+epoch: 12, train time every whole data:23.23s
+epoch: 12, total time:358.17s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2385s
+epoch: 13, train time every whole data:23.24s
+epoch: 13, total time:385.65s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2386s
+epoch: 14, train time every whole data:23.25s
+epoch: 14, total time:413.14s
+validation batch 1 / 3, loss: 0.06
+validation cost time: 4.2388s
+epoch: 15, train time every whole data:23.25s
+epoch: 15, total time:440.63s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2373s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_16.params
+epoch: 16, train time every whole data:23.24s
+epoch: 16, total time:468.16s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2398s
+epoch: 17, train time every whole data:23.26s
+epoch: 17, total time:495.67s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2411s
+epoch: 18, train time every whole data:23.26s
+epoch: 18, total time:523.17s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2377s
+epoch: 19, train time every whole data:23.27s
+epoch: 19, total time:550.69s
+validation batch 1 / 3, loss: 0.05
+validation cost time: 4.2382s
+epoch: 20, train time every whole data:23.27s
+epoch: 20, total time:578.19s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2373s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_21.params
+epoch: 21, train time every whole data:23.27s
+epoch: 21, total time:605.72s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2386s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_22.params
+epoch: 22, train time every whole data:23.27s
+epoch: 22, total time:633.24s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2401s
+epoch: 23, train time every whole data:23.26s
+epoch: 23, total time:660.74s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2379s
+epoch: 24, train time every whole data:23.26s
+epoch: 24, total time:688.25s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2396s
+epoch: 25, train time every whole data:23.26s
+epoch: 25, total time:715.75s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2403s
+epoch: 26, train time every whole data:23.26s
+epoch: 26, total time:743.26s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2390s
+epoch: 27, train time every whole data:23.28s
+epoch: 27, total time:770.78s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2410s
+epoch: 28, train time every whole data:23.27s
+epoch: 28, total time:798.29s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2390s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_29.params
+epoch: 29, train time every whole data:23.27s
+epoch: 29, total time:825.81s
+validation batch 1 / 3, loss: 0.04
+validation cost time: 4.2391s
+epoch: 30, train time every whole data:23.26s
+epoch: 30, total time:853.31s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 31, train time every whole data:23.26s
+epoch: 31, total time:880.81s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2401s
+epoch: 32, train time every whole data:23.25s
+epoch: 32, total time:908.30s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2405s
+epoch: 33, train time every whole data:23.26s
+epoch: 33, total time:935.81s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_34.params
+epoch: 34, train time every whole data:23.28s
+epoch: 34, total time:963.33s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2388s
+epoch: 35, train time every whole data:23.26s
+epoch: 35, total time:990.84s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2395s
+epoch: 36, train time every whole data:23.25s
+epoch: 36, total time:1018.33s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2377s
+epoch: 37, train time every whole data:23.26s
+epoch: 37, total time:1045.83s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2398s
+epoch: 38, train time every whole data:23.27s
+epoch: 38, total time:1073.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 39, train time every whole data:23.27s
+epoch: 39, total time:1100.85s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2381s
+epoch: 40, train time every whole data:23.26s
+epoch: 40, total time:1128.36s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2394s
+epoch: 41, train time every whole data:23.25s
+epoch: 41, total time:1155.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_42.params
+epoch: 42, train time every whole data:23.27s
+epoch: 42, total time:1183.37s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2393s
+epoch: 43, train time every whole data:23.26s
+epoch: 43, total time:1210.88s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 44, train time every whole data:23.27s
+epoch: 44, total time:1238.38s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_45.params
+epoch: 45, train time every whole data:23.28s
+epoch: 45, total time:1265.91s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2402s
+epoch: 46, train time every whole data:23.26s
+epoch: 46, total time:1293.41s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 47, train time every whole data:23.26s
+epoch: 47, total time:1320.91s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2407s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_48.params
+epoch: 48, train time every whole data:23.27s
+epoch: 48, total time:1348.43s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2395s
+epoch: 49, train time every whole data:23.26s
+epoch: 49, total time:1375.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 50, train time every whole data:23.26s
+epoch: 50, total time:1403.44s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2407s
+epoch: 51, train time every whole data:23.25s
+epoch: 51, total time:1430.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 52, train time every whole data:23.26s
+epoch: 52, total time:1458.43s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 53, train time every whole data:23.27s
+epoch: 53, total time:1485.94s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2402s
+epoch: 54, train time every whole data:23.26s
+epoch: 54, total time:1513.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2754s
+epoch: 55, train time every whole data:23.27s
+epoch: 55, total time:1541.00s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2387s
+epoch: 56, train time every whole data:23.25s
+epoch: 56, total time:1568.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_57.params
+epoch: 57, train time every whole data:23.26s
+epoch: 57, total time:1596.00s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2395s
+epoch: 58, train time every whole data:23.25s
+epoch: 58, total time:1623.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 59, train time every whole data:23.24s
+epoch: 59, total time:1650.98s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2385s
+epoch: 60, train time every whole data:23.26s
+epoch: 60, total time:1678.47s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2394s
+epoch: 61, train time every whole data:23.26s
+epoch: 61, total time:1705.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2401s
+epoch: 62, train time every whole data:23.27s
+epoch: 62, total time:1733.48s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2396s
+epoch: 63, train time every whole data:23.25s
+epoch: 63, total time:1760.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 64, train time every whole data:23.25s
+epoch: 64, total time:1788.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 65, train time every whole data:23.27s
+epoch: 65, total time:1815.97s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2388s
+epoch: 66, train time every whole data:23.24s
+epoch: 66, total time:1843.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 67, train time every whole data:23.25s
+epoch: 67, total time:1870.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 68, train time every whole data:23.25s
+epoch: 68, total time:1898.43s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2411s
+epoch: 69, train time every whole data:23.27s
+epoch: 69, total time:1925.94s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2405s
+epoch: 70, train time every whole data:23.25s
+epoch: 70, total time:1953.43s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2382s
+epoch: 71, train time every whole data:23.27s
+epoch: 71, total time:1980.94s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2407s
+epoch: 72, train time every whole data:23.27s
+epoch: 72, total time:2008.45s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2389s
+epoch: 73, train time every whole data:23.26s
+epoch: 73, total time:2035.95s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2395s
+epoch: 74, train time every whole data:23.26s
+epoch: 74, total time:2063.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 75, train time every whole data:23.25s
+epoch: 75, total time:2090.94s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2389s
+epoch: 76, train time every whole data:23.26s
+epoch: 76, total time:2118.44s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2394s
+epoch: 77, train time every whole data:23.25s
+epoch: 77, total time:2145.94s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_78.params
+epoch: 78, train time every whole data:23.28s
+epoch: 78, total time:2173.47s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 79, train time every whole data:23.26s
+epoch: 79, total time:2200.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 80, train time every whole data:23.25s
+epoch: 80, total time:2228.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 81, train time every whole data:23.28s
+epoch: 81, total time:2255.98s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 82, train time every whole data:23.25s
+epoch: 82, total time:2283.48s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2395s
+epoch: 83, train time every whole data:23.28s
+epoch: 83, total time:2310.99s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 84, train time every whole data:23.26s
+epoch: 84, total time:2338.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2401s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_85.params
+epoch: 85, train time every whole data:23.26s
+epoch: 85, total time:2366.01s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 86, train time every whole data:23.25s
+epoch: 86, total time:2393.50s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 87, train time every whole data:23.26s
+epoch: 87, total time:2421.00s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2396s
+epoch: 88, train time every whole data:23.28s
+epoch: 88, total time:2448.52s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 89, train time every whole data:23.27s
+epoch: 89, total time:2476.03s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2762s
+epoch: 90, train time every whole data:23.28s
+epoch: 90, total time:2503.59s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 91, train time every whole data:23.28s
+epoch: 91, total time:2531.12s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 92, train time every whole data:23.26s
+epoch: 92, total time:2558.61s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 93, train time every whole data:23.27s
+epoch: 93, total time:2586.13s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 94, train time every whole data:23.26s
+epoch: 94, total time:2613.63s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2398s
+epoch: 95, train time every whole data:23.27s
+epoch: 95, total time:2641.14s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 96, train time every whole data:23.27s
+epoch: 96, total time:2668.65s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 97, train time every whole data:23.25s
+epoch: 97, total time:2696.14s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_98.params
+epoch: 98, train time every whole data:23.28s
+epoch: 98, total time:2723.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 99, train time every whole data:23.27s
+epoch: 99, total time:2751.18s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 100, train time every whole data:23.28s
+epoch: 100, total time:2778.70s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 101, train time every whole data:23.27s
+epoch: 101, total time:2806.21s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 102, train time every whole data:23.26s
+epoch: 102, total time:2833.71s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 103, train time every whole data:23.28s
+epoch: 103, total time:2861.23s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2393s
+epoch: 104, train time every whole data:23.27s
+epoch: 104, total time:2888.74s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2391s
+epoch: 105, train time every whole data:23.28s
+epoch: 105, total time:2916.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 106, train time every whole data:23.27s
+epoch: 106, total time:2943.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 107, train time every whole data:23.27s
+epoch: 107, total time:2971.29s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 108, train time every whole data:23.28s
+epoch: 108, total time:2998.81s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 109, train time every whole data:23.28s
+epoch: 109, total time:3026.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 110, train time every whole data:23.28s
+epoch: 110, total time:3053.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 111, train time every whole data:23.28s
+epoch: 111, total time:3081.37s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 112, train time every whole data:23.28s
+epoch: 112, total time:3108.89s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 113, train time every whole data:23.26s
+epoch: 113, total time:3136.39s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2400s
+epoch: 114, train time every whole data:23.27s
+epoch: 114, total time:3163.91s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2390s
+epoch: 115, train time every whole data:23.28s
+epoch: 115, total time:3191.42s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 116, train time every whole data:23.28s
+epoch: 116, total time:3218.94s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 117, train time every whole data:23.27s
+epoch: 117, total time:3246.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2377s
+epoch: 118, train time every whole data:23.27s
+epoch: 118, total time:3273.96s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2402s
+epoch: 119, train time every whole data:23.28s
+epoch: 119, total time:3301.48s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2787s
+epoch: 120, train time every whole data:23.27s
+epoch: 120, total time:3329.03s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 121, train time every whole data:23.27s
+epoch: 121, total time:3356.54s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 122, train time every whole data:23.27s
+epoch: 122, total time:3384.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 123, train time every whole data:23.27s
+epoch: 123, total time:3411.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 124, train time every whole data:23.28s
+epoch: 124, total time:3439.08s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 125, train time every whole data:23.26s
+epoch: 125, total time:3466.59s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 126, train time every whole data:23.26s
+epoch: 126, total time:3494.09s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 127, train time every whole data:23.28s
+epoch: 127, total time:3521.61s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 128, train time every whole data:23.26s
+epoch: 128, total time:3549.12s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 129, train time every whole data:23.27s
+epoch: 129, total time:3576.63s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2373s
+epoch: 130, train time every whole data:23.26s
+epoch: 130, total time:3604.12s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 131, train time every whole data:23.28s
+epoch: 131, total time:3631.65s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2419s
+epoch: 132, train time every whole data:23.28s
+epoch: 132, total time:3659.17s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 133, train time every whole data:23.26s
+epoch: 133, total time:3686.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 134, train time every whole data:23.26s
+epoch: 134, total time:3714.18s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 135, train time every whole data:23.26s
+epoch: 135, total time:3741.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 136, train time every whole data:23.27s
+epoch: 136, total time:3769.19s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 137, train time every whole data:23.27s
+epoch: 137, total time:3796.69s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_138.params
+epoch: 138, train time every whole data:23.28s
+epoch: 138, total time:3824.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 139, train time every whole data:23.27s
+epoch: 139, total time:3851.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 140, train time every whole data:23.27s
+epoch: 140, total time:3879.25s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 141, train time every whole data:23.27s
+epoch: 141, total time:3906.76s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 142, train time every whole data:23.27s
+epoch: 142, total time:3934.27s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 143, train time every whole data:23.27s
+epoch: 143, total time:3961.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 144, train time every whole data:23.26s
+epoch: 144, total time:3989.29s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2377s
+epoch: 145, train time every whole data:23.28s
+epoch: 145, total time:4016.80s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 146, train time every whole data:23.28s
+epoch: 146, total time:4044.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 147, train time every whole data:23.27s
+epoch: 147, total time:4071.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 148, train time every whole data:23.29s
+epoch: 148, total time:4099.37s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 149, train time every whole data:23.29s
+epoch: 149, total time:4126.90s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 150, train time every whole data:23.27s
+epoch: 150, total time:4154.41s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_151.params
+epoch: 151, train time every whole data:23.28s
+epoch: 151, total time:4181.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2376s
+epoch: 152, train time every whole data:23.28s
+epoch: 152, total time:4209.47s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 153, train time every whole data:23.27s
+epoch: 153, total time:4236.98s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 154, train time every whole data:23.29s
+epoch: 154, total time:4264.50s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 155, train time every whole data:23.29s
+epoch: 155, total time:4292.03s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_156.params
+epoch: 156, train time every whole data:23.28s
+epoch: 156, total time:4319.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 157, train time every whole data:23.28s
+epoch: 157, total time:4347.08s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 158, train time every whole data:23.28s
+epoch: 158, total time:4374.60s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 159, train time every whole data:23.29s
+epoch: 159, total time:4402.13s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 160, train time every whole data:23.28s
+epoch: 160, total time:4429.65s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2761s
+epoch: 161, train time every whole data:23.28s
+epoch: 161, total time:4457.21s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 162, train time every whole data:23.28s
+epoch: 162, total time:4484.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 163, train time every whole data:23.28s
+epoch: 163, total time:4512.24s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 164, train time every whole data:23.27s
+epoch: 164, total time:4539.75s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 165, train time every whole data:23.27s
+epoch: 165, total time:4567.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2401s
+epoch: 166, train time every whole data:23.27s
+epoch: 166, total time:4594.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 167, train time every whole data:23.27s
+epoch: 167, total time:4622.28s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 168, train time every whole data:23.27s
+epoch: 168, total time:4649.79s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 169, train time every whole data:23.28s
+epoch: 169, total time:4677.31s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 170, train time every whole data:23.26s
+epoch: 170, total time:4704.82s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 171, train time every whole data:23.27s
+epoch: 171, total time:4732.32s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 172, train time every whole data:23.27s
+epoch: 172, total time:4759.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 173, train time every whole data:23.27s
+epoch: 173, total time:4787.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 174, train time every whole data:23.27s
+epoch: 174, total time:4814.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 175, train time every whole data:23.26s
+epoch: 175, total time:4842.36s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2382s
+epoch: 176, train time every whole data:23.28s
+epoch: 176, total time:4869.88s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 177, train time every whole data:23.27s
+epoch: 177, total time:4897.39s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 178, train time every whole data:23.27s
+epoch: 178, total time:4924.90s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_179.params
+epoch: 179, train time every whole data:23.28s
+epoch: 179, total time:4952.43s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 180, train time every whole data:23.27s
+epoch: 180, total time:4979.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 181, train time every whole data:23.28s
+epoch: 181, total time:5007.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 182, train time every whole data:23.27s
+epoch: 182, total time:5034.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 183, train time every whole data:23.29s
+epoch: 183, total time:5062.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 184, train time every whole data:23.29s
+epoch: 184, total time:5090.02s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 185, train time every whole data:23.28s
+epoch: 185, total time:5117.54s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2385s
+epoch: 186, train time every whole data:23.28s
+epoch: 186, total time:5145.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 187, train time every whole data:23.27s
+epoch: 187, total time:5172.58s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 188, train time every whole data:23.28s
+epoch: 188, total time:5200.10s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 189, train time every whole data:23.27s
+epoch: 189, total time:5227.61s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 190, train time every whole data:23.28s
+epoch: 190, total time:5255.14s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_191.params
+epoch: 191, train time every whole data:23.28s
+epoch: 191, total time:5282.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 192, train time every whole data:23.27s
+epoch: 192, total time:5310.17s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 193, train time every whole data:23.28s
+epoch: 193, total time:5337.69s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 194, train time every whole data:23.27s
+epoch: 194, total time:5365.20s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 195, train time every whole data:23.27s
+epoch: 195, total time:5392.71s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 196, train time every whole data:23.28s
+epoch: 196, total time:5420.23s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 197, train time every whole data:23.27s
+epoch: 197, total time:5447.75s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 198, train time every whole data:23.27s
+epoch: 198, total time:5475.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2483s
+epoch: 199, train time every whole data:23.26s
+epoch: 199, total time:5502.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 200, train time every whole data:23.27s
+epoch: 200, total time:5530.28s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 201, train time every whole data:23.27s
+epoch: 201, total time:5557.79s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2723s
+epoch: 202, train time every whole data:23.28s
+epoch: 202, total time:5585.34s
+validation batch 1 / 3, loss: 0.03
+validation cost time: 4.2393s
+epoch: 203, train time every whole data:23.27s
+epoch: 203, total time:5612.86s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_204.params
+epoch: 204, train time every whole data:23.27s
+epoch: 204, total time:5640.38s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2409s
+epoch: 205, train time every whole data:23.27s
+epoch: 205, total time:5667.89s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 206, train time every whole data:23.26s
+epoch: 206, total time:5695.39s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 207, train time every whole data:23.27s
+epoch: 207, total time:5722.90s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 208, train time every whole data:23.27s
+epoch: 208, total time:5750.41s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 209, train time every whole data:23.28s
+epoch: 209, total time:5777.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 210, train time every whole data:23.27s
+epoch: 210, total time:5805.44s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 211, train time every whole data:23.28s
+epoch: 211, total time:5832.96s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 212, train time every whole data:23.27s
+epoch: 212, total time:5860.47s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 213, train time every whole data:23.26s
+epoch: 213, total time:5887.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 214, train time every whole data:23.29s
+epoch: 214, total time:5915.50s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 215, train time every whole data:23.26s
+epoch: 215, total time:5943.00s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 216, train time every whole data:23.09s
+epoch: 216, total time:5970.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2351s
+epoch: 217, train time every whole data:23.51s
+epoch: 217, total time:5998.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2406s
+epoch: 218, train time every whole data:23.47s
+epoch: 218, total time:6025.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2452s
+epoch: 219, train time every whole data:23.47s
+epoch: 219, total time:6053.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2437s
+epoch: 220, train time every whole data:23.46s
+epoch: 220, total time:6081.21s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 221, train time every whole data:23.48s
+epoch: 221, total time:6108.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 222, train time every whole data:23.48s
+epoch: 222, total time:6136.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2430s
+epoch: 223, train time every whole data:23.46s
+epoch: 223, total time:6164.36s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 224, train time every whole data:23.48s
+epoch: 224, total time:6192.09s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2409s
+epoch: 225, train time every whole data:23.46s
+epoch: 225, total time:6219.80s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 226, train time every whole data:23.47s
+epoch: 226, total time:6247.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 227, train time every whole data:23.47s
+epoch: 227, total time:6275.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2407s
+epoch: 228, train time every whole data:23.46s
+epoch: 228, total time:6302.92s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 229, train time every whole data:23.47s
+epoch: 229, total time:6330.64s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2406s
+epoch: 230, train time every whole data:23.47s
+epoch: 230, total time:6358.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2407s
+epoch: 231, train time every whole data:23.46s
+epoch: 231, total time:6386.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2401s
+epoch: 232, train time every whole data:23.40s
+epoch: 232, total time:6413.69s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 233, train time every whole data:23.26s
+epoch: 233, total time:6441.19s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 234, train time every whole data:23.28s
+epoch: 234, total time:6468.71s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 235, train time every whole data:23.26s
+epoch: 235, total time:6496.21s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 236, train time every whole data:23.28s
+epoch: 236, total time:6523.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 237, train time every whole data:23.26s
+epoch: 237, total time:6551.23s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 238, train time every whole data:23.26s
+epoch: 238, total time:6578.74s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 239, train time every whole data:23.27s
+epoch: 239, total time:6606.25s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2759s
+epoch: 240, train time every whole data:23.28s
+epoch: 240, total time:6633.81s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 241, train time every whole data:23.28s
+epoch: 241, total time:6661.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 242, train time every whole data:23.27s
+epoch: 242, total time:6688.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 243, train time every whole data:23.27s
+epoch: 243, total time:6716.36s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 244, train time every whole data:23.27s
+epoch: 244, total time:6743.86s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 245, train time every whole data:23.27s
+epoch: 245, total time:6771.38s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 246, train time every whole data:23.29s
+epoch: 246, total time:6798.90s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 247, train time every whole data:23.28s
+epoch: 247, total time:6826.42s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 248, train time every whole data:23.28s
+epoch: 248, total time:6853.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 249, train time every whole data:23.27s
+epoch: 249, total time:6881.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 250, train time every whole data:23.29s
+epoch: 250, total time:6908.99s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 251, train time every whole data:23.27s
+epoch: 251, total time:6936.50s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 252, train time every whole data:23.28s
+epoch: 252, total time:6964.02s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 253, train time every whole data:23.28s
+epoch: 253, total time:6991.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 254, train time every whole data:23.25s
+epoch: 254, total time:7019.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 255, train time every whole data:23.26s
+epoch: 255, total time:7046.54s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 256, train time every whole data:23.26s
+epoch: 256, total time:7074.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 257, train time every whole data:23.28s
+epoch: 257, total time:7101.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 258, train time every whole data:23.25s
+epoch: 258, total time:7129.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 259, train time every whole data:23.27s
+epoch: 259, total time:7156.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 260, train time every whole data:23.26s
+epoch: 260, total time:7184.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 261, train time every whole data:23.24s
+epoch: 261, total time:7211.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 262, train time every whole data:23.27s
+epoch: 262, total time:7239.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 263, train time every whole data:23.26s
+epoch: 263, total time:7266.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 264, train time every whole data:23.26s
+epoch: 264, total time:7294.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 265, train time every whole data:23.25s
+epoch: 265, total time:7321.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 266, train time every whole data:23.26s
+epoch: 266, total time:7349.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 267, train time every whole data:23.26s
+epoch: 267, total time:7376.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 268, train time every whole data:23.25s
+epoch: 268, total time:7404.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 269, train time every whole data:23.26s
+epoch: 269, total time:7431.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 270, train time every whole data:23.26s
+epoch: 270, total time:7459.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 271, train time every whole data:23.26s
+epoch: 271, total time:7486.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 272, train time every whole data:23.26s
+epoch: 272, total time:7514.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2425s
+epoch: 273, train time every whole data:23.26s
+epoch: 273, total time:7541.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 274, train time every whole data:23.26s
+epoch: 274, total time:7569.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2539s
+epoch: 275, train time every whole data:23.25s
+epoch: 275, total time:7596.57s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 276, train time every whole data:23.26s
+epoch: 276, total time:7624.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 277, train time every whole data:23.25s
+epoch: 277, total time:7651.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 278, train time every whole data:23.27s
+epoch: 278, total time:7679.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 279, train time every whole data:23.26s
+epoch: 279, total time:7706.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 280, train time every whole data:23.26s
+epoch: 280, total time:7734.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 281, train time every whole data:23.26s
+epoch: 281, total time:7761.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 282, train time every whole data:23.26s
+epoch: 282, total time:7789.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 283, train time every whole data:23.26s
+epoch: 283, total time:7816.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 284, train time every whole data:23.26s
+epoch: 284, total time:7844.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 285, train time every whole data:23.26s
+epoch: 285, total time:7871.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2368s
+epoch: 286, train time every whole data:23.25s
+epoch: 286, total time:7899.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 287, train time every whole data:23.25s
+epoch: 287, total time:7926.53s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 288, train time every whole data:23.25s
+epoch: 288, total time:7954.02s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 289, train time every whole data:23.25s
+epoch: 289, total time:7981.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 290, train time every whole data:23.25s
+epoch: 290, total time:8009.00s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 291, train time every whole data:23.25s
+epoch: 291, total time:8036.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 292, train time every whole data:23.26s
+epoch: 292, total time:8064.00s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 293, train time every whole data:23.25s
+epoch: 293, total time:8091.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 294, train time every whole data:23.25s
+epoch: 294, total time:8118.98s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 295, train time every whole data:23.25s
+epoch: 295, total time:8146.48s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 296, train time every whole data:23.25s
+epoch: 296, total time:8173.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 297, train time every whole data:23.26s
+epoch: 297, total time:8201.47s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 298, train time every whole data:23.24s
+epoch: 298, total time:8228.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 299, train time every whole data:23.25s
+epoch: 299, total time:8256.44s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 300, train time every whole data:23.25s
+epoch: 300, total time:8283.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 301, train time every whole data:23.24s
+epoch: 301, total time:8311.41s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 302, train time every whole data:23.26s
+epoch: 302, total time:8338.91s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2411s
+epoch: 303, train time every whole data:23.23s
+epoch: 303, total time:8366.38s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 304, train time every whole data:23.25s
+epoch: 304, total time:8393.87s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 305, train time every whole data:23.23s
+epoch: 305, total time:8421.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 306, train time every whole data:23.24s
+epoch: 306, total time:8448.82s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 307, train time every whole data:23.25s
+epoch: 307, total time:8476.31s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 308, train time every whole data:23.23s
+epoch: 308, total time:8503.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 309, train time every whole data:23.24s
+epoch: 309, total time:8531.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 310, train time every whole data:23.24s
+epoch: 310, total time:8558.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 311, train time every whole data:23.24s
+epoch: 311, total time:8586.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 312, train time every whole data:23.24s
+epoch: 312, total time:8613.70s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2373s
+epoch: 313, train time every whole data:23.18s
+epoch: 313, total time:8641.12s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2712s
+epoch: 314, train time every whole data:23.21s
+epoch: 314, total time:8668.61s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 315, train time every whole data:23.17s
+epoch: 315, total time:8696.01s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2376s
+epoch: 316, train time every whole data:23.19s
+epoch: 316, total time:8723.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2425s
+epoch: 317, train time every whole data:23.18s
+epoch: 317, total time:8750.87s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 318, train time every whole data:23.18s
+epoch: 318, total time:8778.29s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 319, train time every whole data:23.20s
+epoch: 319, total time:8805.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 320, train time every whole data:23.17s
+epoch: 320, total time:8833.14s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 321, train time every whole data:23.18s
+epoch: 321, total time:8860.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 322, train time every whole data:23.19s
+epoch: 322, total time:8887.99s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 323, train time every whole data:23.17s
+epoch: 323, total time:8915.40s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 324, train time every whole data:23.18s
+epoch: 324, total time:8942.83s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 325, train time every whole data:23.19s
+epoch: 325, total time:8970.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2422s
+epoch: 326, train time every whole data:23.18s
+epoch: 326, total time:8997.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 327, train time every whole data:23.19s
+epoch: 327, total time:9025.11s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 328, train time every whole data:23.19s
+epoch: 328, total time:9052.53s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 329, train time every whole data:23.18s
+epoch: 329, total time:9079.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 330, train time every whole data:23.19s
+epoch: 330, total time:9107.38s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 331, train time every whole data:23.18s
+epoch: 331, total time:9134.80s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 332, train time every whole data:23.19s
+epoch: 332, total time:9162.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 333, train time every whole data:23.17s
+epoch: 333, total time:9189.64s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 334, train time every whole data:23.19s
+epoch: 334, total time:9217.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 335, train time every whole data:23.19s
+epoch: 335, total time:9244.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2376s
+epoch: 336, train time every whole data:23.19s
+epoch: 336, total time:9271.92s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 337, train time every whole data:23.19s
+epoch: 337, total time:9299.35s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 338, train time every whole data:23.18s
+epoch: 338, total time:9326.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 339, train time every whole data:23.18s
+epoch: 339, total time:9354.20s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2720s
+epoch: 340, train time every whole data:23.20s
+epoch: 340, total time:9381.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 341, train time every whole data:23.18s
+epoch: 341, total time:9409.09s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 342, train time every whole data:23.18s
+epoch: 342, total time:9436.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 343, train time every whole data:23.17s
+epoch: 343, total time:9463.92s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2373s
+epoch: 344, train time every whole data:23.18s
+epoch: 344, total time:9491.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2441s
+epoch: 345, train time every whole data:23.19s
+epoch: 345, total time:9518.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2372s
+epoch: 346, train time every whole data:23.18s
+epoch: 346, total time:9546.20s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 347, train time every whole data:23.19s
+epoch: 347, total time:9573.63s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 348, train time every whole data:23.18s
+epoch: 348, total time:9601.05s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 349, train time every whole data:23.18s
+epoch: 349, total time:9628.48s
+best epoch: 204
+apply the best val model on the test data set ...
+load weight from: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_204.params
+predicting testing set batch 1 / 3, time: 1.91s
+test time on whole data:4.24s
+input: (1128, 80, 12, 1)
+prediction: (1128, 80, 12, 1)
+data_target_tensor: (1128, 80, 12)
+current epoch: 204, predict 0 points
+MAE: 13.74
+RMSE: 23.37
+MAPE: 38.66
+current epoch: 204, predict 1 points
+MAE: 15.08
+RMSE: 25.86
+MAPE: 47.71
+current epoch: 204, predict 2 points
+MAE: 15.91
+RMSE: 27.52
+MAPE: 51.74
+current epoch: 204, predict 3 points
+MAE: 17.04
+RMSE: 29.80
+MAPE: 57.65
+current epoch: 204, predict 4 points
+MAE: 17.78
+RMSE: 31.29
+MAPE: 66.08
+current epoch: 204, predict 5 points
+MAE: 18.27
+RMSE: 32.17
+MAPE: 69.82
+current epoch: 204, predict 6 points
+MAE: 18.79
+RMSE: 33.43
+MAPE: 73.23
+current epoch: 204, predict 7 points
+MAE: 19.10
+RMSE: 33.90
+MAPE: 73.94
+current epoch: 204, predict 8 points
+MAE: 19.29
+RMSE: 34.60
+MAPE: 72.68
+current epoch: 204, predict 9 points
+MAE: 19.38
+RMSE: 34.89
+MAPE: 71.23
+current epoch: 204, predict 10 points
+MAE: 19.52
+RMSE: 35.34
+MAPE: 72.10
+current epoch: 204, predict 11 points
+MAE: 19.81
+RMSE: 36.08
+MAPE: 74.34
+all MAE: 17.81
+all RMSE: 31.76
+all MAPE: 63.99
+[13.735237, 23.369929941877903, 38.65750730037689, 15.079393, 25.863516945478672, 47.709813714027405, 15.907034, 27.524840077447543, 51.74459218978882, 17.038105, 29.80103598208406, 57.6520562171936, 17.780703, 31.28602318259755, 66.0833477973938, 18.274632, 32.16916574313631, 69.81850862503052, 18.79439, 33.431700358599585, 73.2306182384491, 19.103516, 33.89658020234582, 73.9420473575592, 19.294117, 34.60290395203938, 72.68362641334534, 19.375463, 34.88863420764705, 71.22679948806763, 19.518826, 35.343608393836575, 72.10297584533691, 19.813177, 36.08327601004636, 74.34297800064087, 17.80955, 31.763278857653575, 63.99413347244263]
+fine tune the model ... 
+epoch: 350, train time every whole data:64.91s
+epoch: 350, total time:9697.78s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_350.params
+epoch: 351, train time every whole data:64.85s
+epoch: 351, total time:9766.88s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2366s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_351.params
+epoch: 352, train time every whole data:64.93s
+epoch: 352, total time:9836.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 353, train time every whole data:64.88s
+epoch: 353, total time:9905.18s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_353.params
+epoch: 354, train time every whole data:64.87s
+epoch: 354, total time:9974.30s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 355, train time every whole data:64.86s
+epoch: 355, total time:10043.40s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_355.params
+epoch: 356, train time every whole data:64.91s
+epoch: 356, total time:10112.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2372s
+epoch: 357, train time every whole data:64.86s
+epoch: 357, total time:10181.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 358, train time every whole data:64.86s
+epoch: 358, total time:10250.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_358.params
+epoch: 359, train time every whole data:64.83s
+epoch: 359, total time:10319.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 360, train time every whole data:64.82s
+epoch: 360, total time:10388.92s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 361, train time every whole data:64.79s
+epoch: 361, total time:10457.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_361.params
+epoch: 362, train time every whole data:64.92s
+epoch: 362, total time:10527.12s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_362.params
+epoch: 363, train time every whole data:64.89s
+epoch: 363, total time:10596.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 364, train time every whole data:64.85s
+epoch: 364, total time:10665.35s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2403s
+epoch: 365, train time every whole data:64.85s
+epoch: 365, total time:10734.43s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 366, train time every whole data:64.84s
+epoch: 366, total time:10803.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2471s
+epoch: 367, train time every whole data:64.83s
+epoch: 367, total time:10872.59s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+save parameters to file: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_367.params
+epoch: 368, train time every whole data:64.88s
+epoch: 368, total time:10941.72s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 369, train time every whole data:64.89s
+epoch: 369, total time:11010.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 370, train time every whole data:64.88s
+epoch: 370, total time:11079.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2364s
+epoch: 371, train time every whole data:64.92s
+epoch: 371, total time:11149.13s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 372, train time every whole data:64.89s
+epoch: 372, total time:11218.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 373, train time every whole data:64.84s
+epoch: 373, total time:11287.34s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2424s
+epoch: 374, train time every whole data:64.87s
+epoch: 374, total time:11356.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 375, train time every whole data:64.86s
+epoch: 375, total time:11425.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 376, train time every whole data:64.89s
+epoch: 376, total time:11494.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 377, train time every whole data:64.85s
+epoch: 377, total time:11563.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2419s
+epoch: 378, train time every whole data:64.84s
+epoch: 378, total time:11632.85s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 379, train time every whole data:64.83s
+epoch: 379, total time:11701.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2371s
+epoch: 380, train time every whole data:64.85s
+epoch: 380, total time:11771.01s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 381, train time every whole data:64.84s
+epoch: 381, total time:11840.10s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 382, train time every whole data:64.82s
+epoch: 382, total time:11909.16s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 383, train time every whole data:64.84s
+epoch: 383, total time:11978.24s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2753s
+epoch: 384, train time every whole data:64.83s
+epoch: 384, total time:12047.35s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 385, train time every whole data:64.85s
+epoch: 385, total time:12116.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 386, train time every whole data:64.82s
+epoch: 386, total time:12185.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 387, train time every whole data:64.82s
+epoch: 387, total time:12254.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 388, train time every whole data:64.78s
+epoch: 388, total time:12323.58s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 389, train time every whole data:64.78s
+epoch: 389, total time:12392.60s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 390, train time every whole data:64.80s
+epoch: 390, total time:12461.64s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 391, train time every whole data:64.75s
+epoch: 391, total time:12530.64s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 392, train time every whole data:64.78s
+epoch: 392, total time:12599.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 393, train time every whole data:64.74s
+epoch: 393, total time:12668.64s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2419s
+epoch: 394, train time every whole data:64.75s
+epoch: 394, total time:12737.63s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 395, train time every whole data:64.79s
+epoch: 395, total time:12806.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 396, train time every whole data:64.75s
+epoch: 396, total time:12875.65s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2373s
+epoch: 397, train time every whole data:64.77s
+epoch: 397, total time:12944.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2408s
+epoch: 398, train time every whole data:64.75s
+epoch: 398, total time:13013.65s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 399, train time every whole data:64.78s
+epoch: 399, total time:13082.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 400, train time every whole data:64.78s
+epoch: 400, total time:13151.69s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 401, train time every whole data:64.75s
+epoch: 401, total time:13220.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2400s
+epoch: 402, train time every whole data:64.75s
+epoch: 402, total time:13289.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 403, train time every whole data:64.81s
+epoch: 403, total time:13358.72s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 404, train time every whole data:64.76s
+epoch: 404, total time:13427.72s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2377s
+epoch: 405, train time every whole data:64.77s
+epoch: 405, total time:13496.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 406, train time every whole data:64.76s
+epoch: 406, total time:13565.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 407, train time every whole data:64.76s
+epoch: 407, total time:13634.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 408, train time every whole data:64.77s
+epoch: 408, total time:13703.74s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 409, train time every whole data:64.86s
+epoch: 409, total time:13772.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2748s
+epoch: 410, train time every whole data:64.86s
+epoch: 410, total time:13841.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2376s
+epoch: 411, train time every whole data:64.85s
+epoch: 411, total time:13911.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 412, train time every whole data:64.85s
+epoch: 412, total time:13980.15s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 413, train time every whole data:64.83s
+epoch: 413, total time:14049.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 414, train time every whole data:64.82s
+epoch: 414, total time:14118.28s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 415, train time every whole data:64.79s
+epoch: 415, total time:14187.32s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2372s
+epoch: 416, train time every whole data:64.63s
+epoch: 416, total time:14256.19s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2414s
+epoch: 417, train time every whole data:65.33s
+epoch: 417, total time:14325.76s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 418, train time every whole data:65.33s
+epoch: 418, total time:14395.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 419, train time every whole data:65.32s
+epoch: 419, total time:14464.89s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2401s
+epoch: 420, train time every whole data:65.32s
+epoch: 420, total time:14534.45s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2407s
+epoch: 421, train time every whole data:65.32s
+epoch: 421, total time:14604.02s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2445s
+epoch: 422, train time every whole data:65.35s
+epoch: 422, total time:14673.62s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2406s
+epoch: 423, train time every whole data:64.95s
+epoch: 423, total time:14742.81s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 424, train time every whole data:64.79s
+epoch: 424, total time:14811.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 425, train time every whole data:64.81s
+epoch: 425, total time:14880.89s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 426, train time every whole data:64.84s
+epoch: 426, total time:14949.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 427, train time every whole data:64.80s
+epoch: 427, total time:15019.01s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 428, train time every whole data:64.79s
+epoch: 428, total time:15088.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 429, train time every whole data:64.75s
+epoch: 429, total time:15157.04s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 430, train time every whole data:64.79s
+epoch: 430, total time:15226.07s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 431, train time every whole data:64.81s
+epoch: 431, total time:15295.11s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2371s
+epoch: 432, train time every whole data:64.81s
+epoch: 432, total time:15364.16s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 433, train time every whole data:64.81s
+epoch: 433, total time:15433.21s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2421s
+epoch: 434, train time every whole data:64.83s
+epoch: 434, total time:15502.29s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 435, train time every whole data:64.79s
+epoch: 435, total time:15571.32s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 436, train time every whole data:64.83s
+epoch: 436, total time:15640.39s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 437, train time every whole data:64.79s
+epoch: 437, total time:15709.42s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2404s
+epoch: 438, train time every whole data:64.80s
+epoch: 438, total time:15778.47s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 439, train time every whole data:64.80s
+epoch: 439, total time:15847.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 440, train time every whole data:64.76s
+epoch: 440, total time:15916.51s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 441, train time every whole data:64.87s
+epoch: 441, total time:15985.62s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 442, train time every whole data:64.81s
+epoch: 442, total time:16054.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 443, train time every whole data:64.80s
+epoch: 443, total time:16123.71s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2379s
+epoch: 444, train time every whole data:64.79s
+epoch: 444, total time:16192.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 445, train time every whole data:64.76s
+epoch: 445, total time:16261.73s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2413s
+epoch: 446, train time every whole data:64.79s
+epoch: 446, total time:16330.76s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2755s
+epoch: 447, train time every whole data:64.87s
+epoch: 447, total time:16399.91s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 448, train time every whole data:64.88s
+epoch: 448, total time:16469.03s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 449, train time every whole data:64.88s
+epoch: 449, total time:16538.15s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 450, train time every whole data:64.80s
+epoch: 450, total time:16607.19s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 451, train time every whole data:64.83s
+epoch: 451, total time:16676.26s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2399s
+epoch: 452, train time every whole data:64.80s
+epoch: 452, total time:16745.30s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 453, train time every whole data:64.78s
+epoch: 453, total time:16814.32s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 454, train time every whole data:64.79s
+epoch: 454, total time:16883.36s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 455, train time every whole data:64.81s
+epoch: 455, total time:16952.41s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 456, train time every whole data:64.81s
+epoch: 456, total time:17021.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2393s
+epoch: 457, train time every whole data:64.80s
+epoch: 457, total time:17090.50s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 458, train time every whole data:64.78s
+epoch: 458, total time:17159.52s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 459, train time every whole data:64.79s
+epoch: 459, total time:17228.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 460, train time every whole data:64.82s
+epoch: 460, total time:17297.61s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 461, train time every whole data:64.80s
+epoch: 461, total time:17366.66s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 462, train time every whole data:64.78s
+epoch: 462, total time:17435.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 463, train time every whole data:64.76s
+epoch: 463, total time:17504.68s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 464, train time every whole data:64.79s
+epoch: 464, total time:17573.71s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2377s
+epoch: 465, train time every whole data:64.80s
+epoch: 465, total time:17642.75s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 466, train time every whole data:64.79s
+epoch: 466, total time:17711.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2433s
+epoch: 467, train time every whole data:64.81s
+epoch: 467, total time:17780.83s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2386s
+epoch: 468, train time every whole data:64.78s
+epoch: 468, total time:17849.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 469, train time every whole data:64.80s
+epoch: 469, total time:17918.88s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2395s
+epoch: 470, train time every whole data:64.80s
+epoch: 470, total time:17987.93s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 471, train time every whole data:64.80s
+epoch: 471, total time:18056.97s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2388s
+epoch: 472, train time every whole data:64.81s
+epoch: 472, total time:18126.01s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2756s
+epoch: 473, train time every whole data:64.85s
+epoch: 473, total time:18195.14s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 474, train time every whole data:64.81s
+epoch: 474, total time:18264.19s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 475, train time every whole data:64.82s
+epoch: 475, total time:18333.25s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2422s
+epoch: 476, train time every whole data:64.81s
+epoch: 476, total time:18402.30s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 477, train time every whole data:64.83s
+epoch: 477, total time:18471.36s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 478, train time every whole data:64.80s
+epoch: 478, total time:18540.40s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2373s
+epoch: 479, train time every whole data:64.81s
+epoch: 479, total time:18609.46s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 480, train time every whole data:64.83s
+epoch: 480, total time:18678.52s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2381s
+epoch: 481, train time every whole data:64.82s
+epoch: 481, total time:18747.58s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2394s
+epoch: 482, train time every whole data:64.80s
+epoch: 482, total time:18816.63s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 483, train time every whole data:64.82s
+epoch: 483, total time:18885.69s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2391s
+epoch: 484, train time every whole data:64.81s
+epoch: 484, total time:18954.74s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 485, train time every whole data:64.83s
+epoch: 485, total time:19023.80s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 486, train time every whole data:64.79s
+epoch: 486, total time:19092.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 487, train time every whole data:64.76s
+epoch: 487, total time:19161.84s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2387s
+epoch: 488, train time every whole data:64.82s
+epoch: 488, total time:19230.90s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 489, train time every whole data:64.84s
+epoch: 489, total time:19299.98s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 490, train time every whole data:64.84s
+epoch: 490, total time:19369.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 491, train time every whole data:64.81s
+epoch: 491, total time:19438.11s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2376s
+epoch: 492, train time every whole data:64.83s
+epoch: 492, total time:19507.18s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2412s
+epoch: 493, train time every whole data:64.80s
+epoch: 493, total time:19576.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2380s
+epoch: 494, train time every whole data:64.76s
+epoch: 494, total time:19645.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 495, train time every whole data:64.82s
+epoch: 495, total time:19714.28s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 496, train time every whole data:64.81s
+epoch: 496, total time:19783.33s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 497, train time every whole data:64.80s
+epoch: 497, total time:19852.37s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2384s
+epoch: 498, train time every whole data:64.83s
+epoch: 498, total time:19921.44s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2382s
+epoch: 499, train time every whole data:64.81s
+epoch: 499, total time:19990.49s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 500, train time every whole data:64.82s
+epoch: 500, total time:20059.55s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2397s
+epoch: 501, train time every whole data:64.79s
+epoch: 501, total time:20128.58s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 502, train time every whole data:64.74s
+epoch: 502, total time:20197.57s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 503, train time every whole data:64.79s
+epoch: 503, total time:20266.60s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2375s
+epoch: 504, train time every whole data:64.90s
+epoch: 504, total time:20335.74s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2372s
+epoch: 505, train time every whole data:64.88s
+epoch: 505, total time:20404.86s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2402s
+epoch: 506, train time every whole data:64.85s
+epoch: 506, total time:20473.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 507, train time every whole data:64.87s
+epoch: 507, total time:20543.06s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 508, train time every whole data:64.87s
+epoch: 508, total time:20612.18s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 509, train time every whole data:64.86s
+epoch: 509, total time:20681.28s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2385s
+epoch: 510, train time every whole data:64.84s
+epoch: 510, total time:20750.35s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2389s
+epoch: 511, train time every whole data:64.84s
+epoch: 511, total time:20819.44s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2398s
+epoch: 512, train time every whole data:64.88s
+epoch: 512, total time:20888.56s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 513, train time every whole data:64.87s
+epoch: 513, total time:20957.67s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2390s
+epoch: 514, train time every whole data:64.86s
+epoch: 514, total time:21026.77s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2396s
+epoch: 515, train time every whole data:64.85s
+epoch: 515, total time:21095.86s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2392s
+epoch: 516, train time every whole data:64.84s
+epoch: 516, total time:21164.95s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2383s
+epoch: 517, train time every whole data:64.83s
+epoch: 517, total time:21234.02s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2374s
+epoch: 518, train time every whole data:64.84s
+epoch: 518, total time:21303.09s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2378s
+epoch: 519, train time every whole data:64.89s
+epoch: 519, total time:21372.22s
+validation batch 1 / 3, loss: 0.02
+validation cost time: 4.2403s
+best epoch: 367
+apply the best val model on the test data set ...
+load weight from: ../experiments/HZME_OUTFLOW/MAE_ASTGNN_h1d0w0_layer3_head4_dm64_channel1_dir2_drop0.00_1.00e-03_B8_K5_TcontextScaledSAtSE1TE/epoch_367.params
+predicting testing set batch 1 / 3, time: 1.91s
+test time on whole data:4.24s
+input: (1128, 80, 12, 1)
+prediction: (1128, 80, 12, 1)
+data_target_tensor: (1128, 80, 12)
+current epoch: 367, predict 0 points
+MAE: 13.67
+RMSE: 23.13
+MAPE: 38.12
+current epoch: 367, predict 1 points
+MAE: 14.96
+RMSE: 25.59
+MAPE: 48.37
+current epoch: 367, predict 2 points
+MAE: 15.71
+RMSE: 27.00
+MAPE: 53.16
+current epoch: 367, predict 3 points
+MAE: 16.69
+RMSE: 29.10
+MAPE: 60.32
+current epoch: 367, predict 4 points
+MAE: 17.42
+RMSE: 30.41
+MAPE: 67.40
+current epoch: 367, predict 5 points
+MAE: 17.91
+RMSE: 31.54
+MAPE: 70.50
+current epoch: 367, predict 6 points
+MAE: 18.20
+RMSE: 32.29
+MAPE: 73.30
+current epoch: 367, predict 7 points
+MAE: 18.36
+RMSE: 32.64
+MAPE: 74.22
+current epoch: 367, predict 8 points
+MAE: 18.52
+RMSE: 33.02
+MAPE: 74.03
+current epoch: 367, predict 9 points
+MAE: 18.66
+RMSE: 33.23
+MAPE: 73.53
+current epoch: 367, predict 10 points
+MAE: 18.77
+RMSE: 33.57
+MAPE: 74.19
+current epoch: 367, predict 11 points
+MAE: 19.08
+RMSE: 34.16
+MAPE: 76.52
+all MAE: 17.33
+all RMSE: 30.66
+all MAPE: 65.19
+[13.670566, 23.125224344350965, 38.11981976032257, 14.960815, 25.589788593762112, 48.37152659893036, 15.7119465, 27.003683333468025, 53.15570831298828, 16.693079, 29.103348309301115, 60.32136678695679, 17.419712, 30.408326504442517, 67.39605665206909, 17.912144, 31.535263426130893, 70.49856781959534, 18.201092, 32.29308758634539, 73.29755425453186, 18.363056, 32.638096778582614, 74.22427535057068, 18.517267, 33.018512503878036, 74.02661442756653, 18.655737, 33.233361232775195, 73.53307008743286, 18.770191, 33.567800660915175, 74.19089674949646, 19.0831, 34.164408191996756, 76.52292847633362, 17.32989, 30.661768425333037, 65.19435048103333]

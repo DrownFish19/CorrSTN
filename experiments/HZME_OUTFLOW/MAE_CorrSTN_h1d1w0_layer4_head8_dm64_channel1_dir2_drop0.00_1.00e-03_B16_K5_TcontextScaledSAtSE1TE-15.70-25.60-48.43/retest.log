@@ -1,0 +1,527 @@
+C:\Users\developer\anaconda3\envs\pytorch1.7-python3.8\python.exe C:/Users/developer/Downloads/CorrSTN/train_ASTGNN.py
+Wed Nov 10 22:17:43 2021
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 472.12       Driver Version: 472.12       CUDA Version: 11.4     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name            TCC/WDDM | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ... WDDM  | 00000000:17:00.0  On |                  N/A |
+| 50%   35C    P8    24W / 350W |   1308MiB / 24576MiB |      8%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      1424    C+G   C:\Windows\System32\dwm.exe     N/A      |
+|    0   N/A  N/A      4508    C+G   ...artMenuExperienceHost.exe    N/A      |
+|    0   N/A  N/A      4632    C+G   ...mathpix-snipping-tool.exe    N/A      |
+|    0   N/A  N/A      5764    C+G   ...tracted\WechatBrowser.exe    N/A      |
+|    0   N/A  N/A      5872    C+G   ...lPanel\SystemSettings.exe    N/A      |
+|    0   N/A  N/A      8576    C+G   C:\Windows\explorer.exe         N/A      |
+|    0   N/A  N/A     10676    C+G   ...kyb3d8bbwe\Calculator.exe    N/A      |
+|    0   N/A  N/A     11352    C+G   ...5n1h2txyewy\SearchApp.exe    N/A      |
+|    0   N/A  N/A     12948    C+G   ...perience\NVIDIA Share.exe    N/A      |
+|    0   N/A  N/A     13432    C+G   ...nputApp\TextInputHost.exe    N/A      |
+|    0   N/A  N/A     13732    C+G   ...perience\NVIDIA Share.exe    N/A      |
+|    0   N/A  N/A     13928    C+G   ...b3d8bbwe\WinStore.App.exe    N/A      |
+|    0   N/A  N/A     14356    C+G   ...y\ShellExperienceHost.exe    N/A      |
+|    0   N/A  N/A     16092    C+G   ...ropbox\Client\Dropbox.exe    N/A      |
+|    0   N/A  N/A     17304    C+G   ...m Files\Papers\Papers.exe    N/A      |
+|    0   N/A  N/A     20032    C+G   ...nruo_x64\TianruoOCR64.exe    N/A      |
+|    0   N/A  N/A     20940    C+G   ...��\EvernoteSubprocess.exe    N/A      |
+|    0   N/A  N/A     21016    C+G   ...root\Office16\WINWORD.EXE    N/A      |
+|    0   N/A  N/A     24196    C+G   ...0\extracted\WeChatApp.exe    N/A      |
+|    0   N/A  N/A     26236    C+G   ...me\Application\chrome.exe    N/A      |
+|    0   N/A  N/A     26584    C+G   ...e\root\Office16\EXCEL.EXE    N/A      |
++-----------------------------------------------------------------------------+
+CUDA: True cuda:0
+Read configuration file: configurations/HZME_OUTFLOW_rdw.conf
+total training epoch, fine tune epoch: 100 , 0
+batch_size: 16
+attention_top_k: 5
+folder_dir: MAE_ASTGNN_h1d1w0_layer4_head8_dm64_channel1_dir2_drop0.00_1.00e-03_B16_K5_TcontextScaledSAtSE1TE
+load file: data/HZME_OUTFLOW\HZME_OUTFLOW_r1_d1_w0.npz
+ori length: 4313 , percent: 1.0 , scale: 4313
+train: torch.Size([3218, 80, 1, 24]) torch.Size([3218, 80, 12]) torch.Size([3218, 80, 12])
+val: torch.Size([1073, 80, 1, 24]) torch.Size([1073, 80, 12]) torch.Size([1073, 80, 12])
+test: torch.Size([1073, 80, 1, 24]) torch.Size([1073, 80, 12]) torch.Size([1073, 80, 12])
+TemporalPositionalEncoding max_len: 288
+w_index: []
+d_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+h_index: [276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287]
+en_lookup_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287]
+EncoderDecoder(
+  (encoder): Encoder(
+    (layers): ModuleList(
+      (0): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (1): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (2): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (3): EncoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_q1d_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+    )
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (decoder): Decoder(
+    (layers): ModuleList(
+      (0): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (1): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (2): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (3): DecoderLayer(
+        (self_attn): MultiHeadAttentionAwareTemporalContex_qc_kc(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (conv1Ds_aware_temporal_context): ModuleList(
+            (0): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+            (1): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (src_attn): MultiHeadAttentionAwareTemporalContex_qc_k1d(
+          (linears): ModuleList(
+            (0): Linear(in_features=64, out_features=64, bias=True)
+            (1): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (query_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 2))
+          (key_conv1Ds_aware_temporal_context): Conv2d(64, 64, kernel_size=(1, 3), stride=(1, 1), padding=(0, 1))
+          (dropout): Dropout(p=0.0, inplace=False)
+          (attn_ic): Attention_IC(
+            (DAT): DynamicAttentionLayer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (feed_forward_gcn): PositionWiseGCNFeedForward(
+          (gcn): spatialAttentionScaledGCN(
+            (Theta): Linear(in_features=64, out_features=64, bias=False)
+            (SAt): Spatial_Attention_layer(
+              (dropout): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+        )
+        (sublayer): ModuleList(
+          (0): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (1): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (2): SublayerConnection(
+            (dropout): Dropout(p=0.0, inplace=False)
+            (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+    )
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (src_embed): Sequential(
+    (0): Linear(in_features=1, out_features=64, bias=True)
+    (1): TemporalPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (2): SpatialPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+      (embedding): Embedding(80, 64)
+      (gcn_smooth_layers): ModuleList(
+        (0): GCN(
+          (Theta): Linear(in_features=64, out_features=64, bias=False)
+        )
+      )
+    )
+  )
+  (trg_embed): Sequential(
+    (0): Linear(in_features=1, out_features=64, bias=True)
+    (1): TemporalPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+    )
+    (2): SpatialPositionalEncoding(
+      (dropout): Dropout(p=0.0, inplace=False)
+      (embedding): Embedding(80, 64)
+      (gcn_smooth_layers): ModuleList(
+        (0): GCN(
+          (Theta): Linear(in_features=64, out_features=64, bias=False)
+        )
+      )
+    )
+  )
+  (prediction_generator): Linear(in_features=64, out_features=1, bias=True)
+)
+predicting testing set batch 1 / 5, time: 3.87s
+test time on whole data:9.81s
+input: (1073, 80, 24, 1)
+prediction: (1073, 80, 12, 1)
+data_target_tensor: (1073, 80, 12)
+current epoch: 148, predict 0 points
+MAE: 13.44
+RMSE: 22.65
+MAPE: 39.06
+current epoch: 148, predict 1 points
+MAE: 14.05
+RMSE: 23.90
+MAPE: 45.62
+current epoch: 148, predict 2 points
+MAE: 14.05
+RMSE: 24.02
+MAPE: 45.68
+current epoch: 148, predict 3 points
+MAE: 14.37
+RMSE: 24.70
+MAPE: 46.20
+current epoch: 148, predict 4 points
+MAE: 14.58
+RMSE: 25.26
+MAPE: 48.78
+current epoch: 148, predict 5 points
+MAE: 14.74
+RMSE: 25.60
+MAPE: 49.99
+current epoch: 148, predict 6 points
+MAE: 14.91
+RMSE: 25.96
+MAPE: 49.49
+current epoch: 148, predict 7 points
+MAE: 14.99
+RMSE: 26.29
+MAPE: 49.75
+current epoch: 148, predict 8 points
+MAE: 15.16
+RMSE: 26.69
+MAPE: 50.72
+current epoch: 148, predict 9 points
+MAE: 15.23
+RMSE: 26.84
+MAPE: 51.19
+current epoch: 148, predict 10 points
+MAE: 15.33
+RMSE: 27.14
+MAPE: 51.74
+current epoch: 148, predict 11 points
+MAE: 15.60
+RMSE: 27.68
+MAPE: 53.32
+all MAE: 14.70
+all RMSE: 25.60
+all MAPE: 48.43
+[13.437431, 22.654481342602917, 39.062222838401794, 14.052035, 23.900461411112182, 45.62135934829712, 14.052658, 24.02122068023917, 45.67617475986481, 14.365616, 24.695997103766, 46.20042145252228, 14.575994, 25.264902683707046, 48.78402352333069, 14.740173, 25.598330729420862, 49.988749623298645, 14.914081, 25.959268209197102, 49.486327171325684, 14.985283, 26.28585720615746, 49.75324273109436, 15.161443, 26.69494553632766, 50.722867250442505, 15.225369, 26.83806396232958, 51.192450523376465, 15.328967, 27.14039449204071, 51.74477696418762, 15.596521, 27.67640067452549, 53.319233655929565, 14.702964, 25.6015529638371, 48.4296053647995]
+
+Process finished with exit code 0
