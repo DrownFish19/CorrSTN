@@ -4,12 +4,10 @@
 ![CorrSTN.png](CorrSTN.png)
 
 # Requirements
-- Python 3.6
-- matplotlib == 3.1.1
+- python 3.6
 - numpy == 1.19.5
 - minpy == 1.2.5
-- pandas == 0.25.1
-- scikit_learn == 0.21.3
+- scikit-learn
 - pytorch == 1.7.0
 
 create CorrSTN env
