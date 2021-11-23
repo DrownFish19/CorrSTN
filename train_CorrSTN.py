@@ -16,7 +16,7 @@ from tensorboardX import SummaryWriter
 # read hyper-param settings
 os.system("nvidia-smi")
 parser = argparse.ArgumentParser()
-parser.add_argument("--config", default='configurations/PEMS03.conf', type=str, help="configuration file path")
+parser.add_argument("--config", default='configurations/HZME_OUTFLOW_rdw.conf', type=str, help="configuration file path")
 parser.add_argument('--cuda', type=str, default='0')
 args = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda

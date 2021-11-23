@@ -275,7 +275,7 @@ def read_and_generate_dataset_encoder_decoder(graph_signal_matrix_filename,
 
 # prepare dataset
 parser = argparse.ArgumentParser()
-parser.add_argument("--config", default='configurations/PEMS03.conf', type=str,
+parser.add_argument("--config", default='configurations/HZME_OUTFLOW_rdw.conf', type=str,
                     help="configuration file path")
 args = parser.parse_args()
 config = configparser.ConfigParser()
