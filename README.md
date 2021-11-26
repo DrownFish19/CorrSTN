@@ -7,6 +7,7 @@
 - python 3.6
 - numpy == 1.19.5
 - minpy == 1.2.5
+- setuptools == 57.5.0
 - scikit-learn
 - pytorch == 1.7.0
 
@@ -23,6 +24,7 @@ conda install pytorch=1.7.0 torchvision torchaudio cudatoolkit=11.0 -c pytorch
 install package for the maximal
 information coefficient
 ```bash
+pip install setuptools==57.5.0
 pip install minepy==1.2.5
 ```
 
