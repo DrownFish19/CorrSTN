@@ -15,15 +15,15 @@ create CorrSTN env
 conda create -n CorrSTN python=3.6
 ```
 
+install pytorch
+``` bash
+conda install pytorch=1.7.0 torchvision torchaudio cudatoolkit=11.0 -c pytorch
+```
+
 install package for the maximal
 information coefficient
 ```bash
 pip install minepy==1.2.5
-```
-
-install pytorch
-``` bash
-conda install pytorch=1.7.0 torchvision torchaudio cudatoolkit=11.0 -c pytorch
 ```
 
 install other packages
