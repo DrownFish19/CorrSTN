@@ -152,6 +152,9 @@ def tcorr():
         data_name = data_name_list[i]
         data = np.load(data_path)['data'][:int(T * 0.6), :, :1]  # [T,N,F] train data
         T, N, D = data.shape
+        data = np.load(data_path)['data']  # [T,N,F]
+        T, N, F = data.shape
+        data = data[:int(T * 0.6), :, :1]
 
         test_num = 2
         result = np.zeros((N, 3, test_num, 7))
