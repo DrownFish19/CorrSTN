@@ -150,8 +150,6 @@ def tcorr():
     for i in range(len(data_name_list)):
         data_path = data_path_list[i]
         data_name = data_name_list[i]
-        data = np.load(data_path)['data'][:int(T * 0.6), :, :1]  # [T,N,F] train data
-        T, N, D = data.shape
         data = np.load(data_path)['data']  # [T,N,F]
         T, N, F = data.shape
         data = data[:int(T * 0.6), :, :1]
