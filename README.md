@@ -112,3 +112,21 @@ line 537: val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch
 line 550: test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size * 32)
 ```
 so the batch size of test and validation phases is 32 times the batch size of training phases, which can improve the test speed.
+
+
+# Citation
+If you found use this library useful, please consider citing
+```bibtex
+@article{zhu_correlation_2023,
+	title = {A correlation information-based spatiotemporal network for traffic flow forecasting},
+	issn = {0941-0643, 1433-3058},
+	url = {https://link.springer.com/10.1007/s00521-023-08831-3},
+	doi = {10.1007/s00521-023-08831-3},
+	language = {en},
+	urldate = {2023-08-06},
+	journal = {Neural Computing and Applications},
+	author = {Zhu, Weiguo and Sun, Yongqi and Yi, Xintong and Wang, Yan and Liu, Zhen},
+	month = {aug},
+	year = {2023},
+}
+```
